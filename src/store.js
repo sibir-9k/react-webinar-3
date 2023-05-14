@@ -44,7 +44,10 @@ class Store {
 	addItem() {
 		this.setState({
 			...this.state,
-			list: [...this.state.list, { code: (this.state.list.at(-1)?.code ?? 0 ) + 1, title: 'Новая запись' }],
+			list: [
+				...this.state.list,
+				{ code: (this.state.list.at(-1)?.code ?? 0) + 1, title: 'Новая запись' },
+			],
 		});
 	}
 
@@ -69,11 +72,12 @@ class Store {
 			list: this.state.list.map((item) => {
 				if (item.code === code) {
 					item.selected = !item.selected;
-          if(item.count){
-            item.count++;
-          }else{
-            item.count = 1;
-          }
+					if (item.selected && !item.count) {
+						// исправил условие что бы только при выделении увеличивался счётчик
+						item.count = 1;
+					} else if (item.selected && item.count) {
+						item.count++;
+					}
 				} else {
 					item.selected = false;
 				}
