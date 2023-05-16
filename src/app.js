@@ -10,6 +10,18 @@ import './styles.css';
 function App({ store }) {
 	const list = store.getState().list;
 
+// склонение "раз -а"
+function getPhraseNumber(count) {
+  if (count % 10 === 1 && count % 100 !== 11) {
+    return 'раз';
+  } else if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) {
+    return 'раза';
+  } else {
+    return 'раз';
+  }
+}
+
+
 	return (
 		<div className="App">
 			<div className="App-head">
@@ -28,7 +40,7 @@ function App({ store }) {
 								<div className="Item-code">{item.code}</div>
 								<div className="Item-title">
 									{item.title}
-									{item.count > 0 && ` | Выполняли ${item.count} раз`}
+									{item.count > 0 && ` | Выполняли ${item.count} ${getPhraseNumber(item.count)}`}
 								</div>
 								<div className="Item-actions">
 									<button onClick={() => store.deleteItem(item.code)}>Удалить</button>
