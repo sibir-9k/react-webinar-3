@@ -40,7 +40,7 @@ function getPhraseNumber(count) {
 								<div className="Item-code">{item.code}</div>
 								<div className="Item-title">
 									{item.title}
-									{item.count > 0 && ` | Выполняли ${item.count} ${getPhraseNumber(item.count)}`}
+									{item.count > 0 && ` | Выделяли ${item.count} ${getPhraseNumber(item.count)}`}
 								</div>
 								<div className="Item-actions">
 									<button onClick={() => store.deleteItem(item.code)}>Удалить</button>
