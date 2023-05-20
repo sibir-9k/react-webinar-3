@@ -103,7 +103,10 @@ class Store {
 	}
 
 	getPrice() {
-		return this.price;
+    let allPrice = this.listItem.map(product => {
+      return product.price * product.count
+    })
+		return allPrice.reduce((a,b) => a + b, 0);
 	}
 
 	getSelectedItemCount() {
