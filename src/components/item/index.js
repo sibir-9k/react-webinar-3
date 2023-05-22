@@ -4,8 +4,8 @@ import { plural } from '../../utils';
 import './style.css';
 
 function Item(props) {
+
 	let price = props.item.price;
-	let formattedPrice = price.toLocaleString('en-US').replace(/,/g, ' ');
 
 	const callbacks = {
 		onAddItem: (e) => {
@@ -18,7 +18,7 @@ function Item(props) {
 		<div className="Item">
 			<div className="Item-code">{props.item.code}</div>
 			<div className="Item-title">{props.item.title}</div>
-			<div className="Item-price">{`${formattedPrice} ₽`}</div>
+			<div className="Item-price">{props.store.getFormatedPrice(price)} ₽</div>
 			<div className="Item-actions">
 				<button onClick={callbacks.onAddItem}>Добавить</button>
 			</div>

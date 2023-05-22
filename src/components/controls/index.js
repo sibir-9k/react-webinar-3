@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {plural} from "../../utils";
 import './style.css';
 
 function Controls({ store, onOpenModal }) {
@@ -10,7 +11,7 @@ function Controls({ store, onOpenModal }) {
 	return (
 		<div className="Controls">
 			<div className="Controls-count">
-        В корзине: {allCount > 0 ? <b>{allCount} товара / {formattedAllPrice} ₽</b> : <b>пусто</b>}
+        В корзине: {allCount > 0 ? <b>{allCount} {plural(allCount,{one:'товар', few: 'товара', many: 'товаров'})} / {formattedAllPrice} ₽</b> : <b>пусто</b>}
 			</div>
 			<button onClick={() => onOpenModal()}>Перейти</button>
 		</div>

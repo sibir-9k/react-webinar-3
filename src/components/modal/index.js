@@ -1,71 +1,43 @@
-import React, { useState } from 'react';
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import './style.css';
 
-function Modal({ active }) {
+function Modal(props) {
+	let allProductArr = props.store.getAllItemInBucket();
+	let allPrice = props.store.getPrice();
+
+  const handleDeleteClick = (code) => {
+		props.store.deleteItemInBucket(code);
+	};
+
 	return (
-		<section className={`Modal ${active ? 'open' : ''}`}>
+		<section className={`Modal ${props.active ? 'open' : ''}`}>
 			<div className="Modal-box">
 				<div className="Modal-header">
-					<b>Корзина</b>
-					<button>Закрыть</button>
+					<b>{props.title}</b>
+					<button onClick={props.onOpenModal}>Закрыть</button>
 				</div>
 				<div className="Modal-body">
-					<div className="Modal-item">
-						<div className="Modal-item__left">
-							<div className="Modal-code">1</div>
-							<div className="Modal-title">Товар</div>
-						</div>
-						<div className="Modal-item__right">
-							<div className="Modal-price">100 ₽</div>
-							<div className="Modal-count">2 шт</div>
-							<div className="Modal-actions">
-								<button>Удалить</button>
+					{allProductArr.map((product) => {
+						return (
+							<div className="Modal-item" key={product.code}>
+								<div className="Modal-item__left">
+									<div className="Modal-code">{product.code}</div>
+									<div className="Modal-title">{product.title}</div>
+								</div>
+								<div className="Modal-item__right">
+									<div className="Modal-price">{props.store.getFormatedPrice(product.price)} ₽</div>
+									<div className="Modal-count">{product.count} шт</div>
+									<div className="Modal-actions">
+                  <button onClick={() => handleDeleteClick(product.code)}>Удалить</button>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-					<div className="Modal-item">
-						<div className="Modal-item__left">
-							<div className="Modal-code">1</div>
-							<div className="Modal-title">Товар</div>
-						</div>
-						<div className="Modal-item__right">
-							<div className="Modal-price">100 ₽</div>
-							<div className="Modal-count">2 шт</div>
-							<div className="Modal-actions">
-								<button>Удалить</button>
-							</div>
-						</div>
-					</div>
-					<div className="Modal-item">
-						<div className="Modal-item__left">
-							<div className="Modal-code">1</div>
-							<div className="Modal-title">Товар</div>
-						</div>
-						<div className="Modal-item__right">
-							<div className="Modal-price">100 ₽</div>
-							<div className="Modal-count">2 шт</div>
-							<div className="Modal-actions">
-								<button>Удалить</button>
-							</div>
-						</div>
-					</div>
-					<div className="Modal-item">
-						<div className="Modal-item__left">
-							<div className="Modal-code">1</div>
-							<div className="Modal-title">Товар</div>
-						</div>
-						<div className="Modal-item__right">
-							<div className="Modal-price">100 ₽</div>
-							<div className="Modal-count">2 шт</div>
-							<div className="Modal-actions">
-								<button>Удалить</button>
-							</div>
-						</div>
-					</div>
+						);
+					})}
 					<div className="Modal-all-count">
 						<b>Итого</b>
-						<b>223Р</b>
+						<b>{props.store.getFormatedPrice(allPrice)}₽</b>
 					</div>
 				</div>
 			</div>
@@ -74,8 +46,13 @@ function Modal({ active }) {
 }
 
 Modal.propTypes = {
-  active: PropTypes.bool.isRequired
+	active: PropTypes.bool.isRequired,
+	onOpenModal: PropTypes.func,
+  store: PropTypes.object.isRequired,
 };
 
+Modal.defaultProps = {
+	onOpenModal: () => {},
+};
 
 export default Modal;

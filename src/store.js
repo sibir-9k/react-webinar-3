@@ -7,7 +7,7 @@ class Store {
 	constructor(initState = {}) {
 		this.state = initState;
 		this.listeners = []; // Слушатели изменений состояния
-		this.listItem = []; // массив для добавденных товаров в корзину
+		//this.listItem = []; // массив для добавденных товаров в корзину
 		this.price = 0;
 	}
 
@@ -87,31 +87,40 @@ class Store {
 	}
 
 	addItemInBucket(code) {
-		const existingItem = this.listItem.find((item) => item.code === code);
+    let listItem = this.state.listItem ?? []
+		const existingItem = listItem.find((item) => item.code === code);
 		if (existingItem) {
 			existingItem.count++;
 		} else {
 			const product = this.state.list.find((elem) => elem.code === code);
 			if (product) {
-				this.listItem.push({ ...product, count: 1 });
+				listItem.push({ ...product, count: 1 });
 			}
 		}
 		this.setState({
 			...this.state,
-			listItem: this.listItem,
+      listItem
 		});
 	}
-
 	getPrice() {
-    let allPrice = this.listItem.map(product => {
-      return product.price * product.count
-    })
-		return allPrice.reduce((a,b) => a + b, 0);
+		return this.state.listItem?.reduce((acc, item) => (item.price * item.count) + acc, 0) ?? 0;
 	}
-
 	getSelectedItemCount() {
-    return this.listItem.length
-  }
+		return this.state.listItem?.length ?? 0;
+	}
+	getAllItemInBucket() {
+		return this.state.listItem ?? [];
+	}
+	getFormatedPrice(price) {
+		return price.toLocaleString('en-US').replace(/,/g, ' ');
+	}
+	deleteItemInBucket(code) {
+		const updatedList = this.state.listItem?.filter((item) => item.code !== code);
+		this.setState({
+			...this.state,
+			listItem: updatedList,
+		});
+	}
 }
 
 export default Store;

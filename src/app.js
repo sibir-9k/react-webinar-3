@@ -30,8 +30,8 @@ function App({ store }) {
 		<PageLayout>
 			<Head title="Магазин" />
 			<Controls onOpenModal={callbacks.onOpenModal} store={store} />
-			<List list={list} onAddItem={callbacks.onAddItem} />
-			<Modal active={activeModal} />
+			<List list={list} onAddItem={callbacks.onAddItem}  store={store}/>
+			<Modal title="Корзина" active={activeModal} onOpenModal={callbacks.onOpenModal} store={store} />
 		</PageLayout>
 	);
 }
