@@ -1,16 +1,19 @@
 import React from 'react';
 import { getPagesArray } from '../../utils.js';
-import './style.css'
+import './style.css';
 
-export const Pagination = ({ totalPages, changePage }) => {
-	const pagesArray = getPagesArray(totalPages);
-  // const currentPage = pagesArray.indexOf(changePage);
-
+export const Pagination = ({ totalPages, changePage, currentPage }) => {
+	const pagesArray = getPagesArray(totalPages, currentPage);
 
 	return (
-		<div>
-			{pagesArray.map((number) => (
-				<button className="pagination-btn" key={number} onClick={() => changePage(number)}>{number}</button>
+		<div className='pagination'>
+			{pagesArray.map((number,i) => (
+				<button
+        className={number === "..." ? "pagination-ellipsis" : `pagination-btn${number === currentPage ? " active" : ""}`}
+					key={i}
+					onClick={() => changePage(number)}>
+					 {number === "..." ? "..." : number + 1}
+				</button>
 			))}
 		</div>
 	);

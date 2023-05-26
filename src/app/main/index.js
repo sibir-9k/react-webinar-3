@@ -12,6 +12,7 @@ import { Pagination } from '../../components/pagination';
 function Main() {
 	const [totalCount, setTotalCount] = useState(0);
 	const [totalPages, setTotalPages] = useState();
+  const [currentPage, setCurrentPage] = useState(1)
   const limit = 10
   const skip = 0
 
@@ -40,7 +41,8 @@ function Main() {
 
   const changePage = (number) => {
     let newSkip = number * limit
-     store.actions.catalog.load(limit, newSkip)
+    store.actions.catalog.load(limit, newSkip)
+    setCurrentPage(number)
   }
 
 	const callbacks = {
@@ -64,7 +66,7 @@ function Main() {
 			<Head title="Магазин" />
 			<BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
 			<List list={select.list} renderItem={renders.item} />
-			<Pagination totalPages={totalPages} changePage={changePage} />
+			<Pagination totalPages={totalPages} changePage={changePage} currentPage={currentPage}/>
 		</PageLayout>
 	);
 }
