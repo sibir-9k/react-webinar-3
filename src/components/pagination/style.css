@@ -1,0 +1,9 @@
+.pagination-btn{
+  background-color: inherit;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+.pagination-btn:hover{
+  background-color: lightgrey;
+}
