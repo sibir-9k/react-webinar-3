@@ -10,30 +10,23 @@ class Catalog extends StoreModule {
 
   initState() {
     return {
-      list: []
+      list: [],
+      count: 0,
     }
   }
 
-  async getAllLoad(){
-    try {
-      const responce = await fetch('api/v1/articles?limit=*')
-      const result = await responce.json()
-      return result.result.items.length
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   async load(limit, skip) {
     try {
-      const response = await fetch(`api/v1/articles?limit=${limit}&skip=${skip}`);
+      const response = await fetch(`api/v1/articles?limit=${limit}&skip=${skip}&fields=items(_id, title, price),count`);
       const json = await response.json();
       this.setState({
          ...this.getState(),
-         list: json.result.items
+         list: json.result.items,
+         count:json.result.count
       }, 'Загружены товары из АПИ');  
     } catch (error) {
-      console.log('Ошибка блять запроса!!', error)
+      console.log(error)
     }
   }
 }

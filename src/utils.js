@@ -36,18 +36,17 @@ export function numberFormat(value, locale = 'ru-RU', options = {}) {
 
 
 export const getPageCount = (totalCount, limit) => {
-  return Math.ceil(totalCount / limit) + 1
+  return Math.ceil(totalCount / limit) 
 }
 
-export const getPagesArray = (totalPages, currentPage) => {
+export const getPagesArray = (totalPages, currentPage ) => {
   let result = []
-  for(let i = 0; i < totalPages; i++){
-    if (i === 0 || i === totalPages  - 1 || (i >= currentPage - 1 && i <= currentPage + 1)) {
+  for(let i = 1; i < totalPages; i++){
+    if (i === 1 || i === totalPages  - 1 || (i >= currentPage - 1 && i <= currentPage + 1)) {
       result.push(i);
     } else if (result[result.length - 1] !== "...") {
       result.push("...");
     }
-    
   }
   return result
 }

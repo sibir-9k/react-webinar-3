@@ -6,44 +6,46 @@ import BasketTool from '../../components/basket-tool';
 import List from '../../components/list';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
-import { getPageCount, getPagesArray } from '../../utils';
+import { getPageCount } from '../../utils';
 import { Pagination } from '../../components/pagination';
+import HeadBottom from '../../components/head-bottom';
 
 function Main() {
-	const [totalCount, setTotalCount] = useState(0);
+	// const [totalCount, setTotalCount] = useState(0);
 	const [totalPages, setTotalPages] = useState();
-  const [currentPage, setCurrentPage] = useState(1)
-  const limit = 10
-  const skip = 0
+	const [currentPage, setCurrentPage] = useState(1);
+	const limit = 10;
+	const skip = 0;
 
 	const store = useStore();
 
 	useEffect(() => {
-    initLoad()
+		initLoad();
 	}, []);
 
 	const initLoad = async () => {
-		setTotalCount(await store.actions.catalog.getAllLoad());
-		store.actions.catalog.load(limit, skip);
-	};
+		await store.actions.catalog.load(limit, skip);
+	}
 
 	const select = useSelector((state) => ({
 		list: state.catalog.list,
 		amount: state.basket.amount,
 		sum: state.basket.sum,
+    count: state.catalog.count
 	}));
 
-	useEffect(() => {
-    if(totalCount === 0) return 
-    let count = getPageCount(totalCount, limit)
-		setTotalPages(count);
-	},[totalCount]);
 
-  const changePage = (number) => {
-    let newSkip = number * limit
-    store.actions.catalog.load(limit, newSkip)
-    setCurrentPage(number)
-  }
+	useEffect(() => {
+		if (select.count === 0) return;
+		let count = getPageCount(select.count, limit);
+		setTotalPages(count);
+	}, [select.count]);
+
+	const changePage = (number) => {
+		let newSkip = (number - 1) * limit;
+		store.actions.catalog.load(limit, newSkip);
+		setCurrentPage(number);
+	};
 
 	const callbacks = {
 		// Добавление в корзину
@@ -64,9 +66,9 @@ function Main() {
 	return (
 		<PageLayout>
 			<Head title="Магазин" />
-			<BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
+      <HeadBottom onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum}/>
 			<List list={select.list} renderItem={renders.item} />
-			<Pagination totalPages={totalPages} changePage={changePage} currentPage={currentPage}/>
+			<Pagination totalPages={totalPages} changePage={changePage} currentPage={currentPage} />
 		</PageLayout>
 	);
 }
