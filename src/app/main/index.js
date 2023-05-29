@@ -2,7 +2,6 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import Item from '../../components/item';
 import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
-import BasketTool from '../../components/basket-tool';
 import List from '../../components/list';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
@@ -11,7 +10,6 @@ import { Pagination } from '../../components/pagination';
 import HeadBottom from '../../components/head-bottom';
 
 function Main() {
-	// const [totalCount, setTotalCount] = useState(0);
 	const [totalPages, setTotalPages] = useState();
 	const [currentPage, setCurrentPage] = useState(1);
 	const limit = 10;
@@ -37,8 +35,8 @@ function Main() {
 
 	useEffect(() => {
 		if (select.count === 0) return;
-		let count = getPageCount(select.count, limit);
-		setTotalPages(count);
+		let countBtnPagination = getPageCount(select.count, limit);
+		setTotalPages(countBtnPagination);
 	}, [select.count]);
 
 	const changePage = (number) => {

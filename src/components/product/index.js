@@ -9,7 +9,7 @@ function Product({product, addToBasket}) {
 				Страна производитель:<b>{product?.madeIn?.title} ({product?.madeIn?.code})</b>
 			</div>
 			<div className='Product-category'>Категория: <b>{product?.category?.title}</b></div>
-			<div class='Product-year'>Год выпуска: <b>{product.edition}</b></div>
+			<div className='Product-year'>Год выпуска: <b>{product.edition}</b></div>
 			<div className='Product-price'><b>Цена: {product.price} ₽</b></div>
 			<button onClick={() => addToBasket(product._id)}>Добавить</button>
 		</div>

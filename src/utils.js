@@ -41,8 +41,8 @@ export const getPageCount = (totalCount, limit) => {
 
 export const getPagesArray = (totalPages, currentPage ) => {
   let result = []
-  for(let i = 1; i < totalPages; i++){
-    if (i === 1 || i === totalPages  - 1 || (i >= currentPage - 1 && i <= currentPage + 1)) {
+  for(let i = 1; i <= totalPages; i++){
+    if (i === 1 || i === totalPages  || (i >= currentPage - 1 && i <= currentPage + 1)) {
       result.push(i);
     } else if (result[result.length - 1] !== "...") {
       result.push("...");
