@@ -21,10 +21,12 @@ function Main() {
 
 	const callbacks = {
 		singOut: useCallback(() => store.actions.user.singOut(), [store]),
+
 	};
 
   useInit(() => {
     store.actions.catalog.initParams();
+    store.actions.filter.getCategoryFilter();
   }, [], true);
 
   const {t} = useTranslate();
