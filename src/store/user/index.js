@@ -9,38 +9,43 @@ class User extends StoreModule {
 
 	async singIn(data) {
 		try {
-			const responce = await fetch('api/v1/users/sign', {
+			const response = await fetch('api/v1/users/sign', {
 				method: 'POST',
 				headers: {
 					'Content-type': 'application/json',
 				},
 				body: JSON.stringify(data),
 			});
-			const resultUser = await responce.json();
 
-			localStorage.setItem('token', resultUser.result.token);
-
-			this.setState({
-				...this.getState(),
-				user: resultUser.result.user,
-			});
+			if (!response.ok) {
+				const errorResponse = await response.json();
+				setErrorMessage(errorResponse.message);
+			} else {
+				const resultUser = await response.json();
+				localStorage.setItem('token', resultUser.result.token);
+				this.setState({
+					...this.getState(),
+					user: resultUser.result.user,
+				});
+			}
 		} catch (error) {
-			console.error(error);
+			console.error('Error occurred during login:', error);
+			setErrorMessage('An error occurred during login. Please try again later.');
 		}
 	}
 
 	async singOut() {
 		try {
-			const responce = await fetch('api/v1/users/sing', {
+			const response = await fetch('api/v1/users/sing', {
 				method: 'DELETE',
 				headers: {
 					'X-Token': localStorage.getItem('token'),
 					'Content-type': 'application/json',
 				},
 			});
-			const data = await responce.json();
-      
-			localStorage.removeItem('token')
+			const data = await response.json();
+
+			localStorage.removeItem('token');
 
 			this.setState({
 				...this.getState(),
@@ -54,14 +59,14 @@ class User extends StoreModule {
 	async getUser() {
 		if (!localStorage.getItem('token')) return;
 		try {
-			const responce = await fetch('api/v1/users/self', {
+			const response = await fetch('api/v1/users/self', {
 				method: 'GET',
 				headers: {
 					'X-Token': localStorage.getItem('token'),
 					'Content-type': 'application/json',
 				},
 			});
-			const resultUser = await responce.json();
+			const resultUser = await response.json();
 			this.setState({
 				...this.getState(),
 				user: resultUser.result,

@@ -11,7 +11,7 @@ function LoginForm(props) {
 
 	function onSubmitForm(event) {
 		event.preventDefault();
-		if (login && password.length > 5) {
+		if (login && password.length > 3) {
 			props.singIn({ login, password })
       navigate('/profile');
 		}
@@ -21,6 +21,7 @@ function LoginForm(props) {
 		<div className="Form">
 			<h2>{props.title}</h2>
 			<form onSubmit={onSubmitForm}>
+      {props.errorMessage && <div className="error">{props.errorMessage}</div>}
 				<div className="Form-login">
 					<label htmlFor="name">Логин</label>
 					<input
@@ -45,6 +46,7 @@ function LoginForm(props) {
 				</div>
 				<button type="submit">Войти</button>
 			</form>
+      <span className="error">Введен не верный логин или пароль</span>
 		</div>
 	);
 }
