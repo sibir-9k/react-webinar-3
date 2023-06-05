@@ -3,10 +3,11 @@ import './style.css';
 import { useNavigate } from 'react-router-dom';
 
 function LoginBtn(props) {
+	console.log(props);
 	let navigate = useNavigate();
 
 	function changePageUser() {
-		props?.singOut()
+		props.singOut();
 		navigate('/login');
 	}
 

@@ -6,9 +6,12 @@ import LogoutBtn from '../logout-btn';
 import { Link } from 'react-router-dom';
 
 function HeadLogin(props) {
+  console.log(props)
 	return (
 		<div className="Head-login">
-			<Link to={'/profile'} className="Head-login__user">{props.user ? props.user.profile.name : ''}</Link>
+			<Link to={'/profile'} className="Head-login__user">
+				{props.user ? props.user.profile.name : ''}
+			</Link>
 			{props.user ? (
 				<LogoutBtn title={'Выход'} singOut={props.singOut} />
 			) : (

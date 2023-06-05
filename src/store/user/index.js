@@ -4,10 +4,11 @@ class User extends StoreModule {
 	initState() {
 		return {
 			user: null,
+			error: null,
 		};
 	}
 
-	async singIn(data) {
+	async signIn(data) {
 		try {
 			const response = await fetch('api/v1/users/sign', {
 				method: 'POST',
@@ -16,27 +17,28 @@ class User extends StoreModule {
 				},
 				body: JSON.stringify(data),
 			});
+			const resultUser = await response.json();
 
-			if (!response.ok) {
-				const errorResponse = await response.json();
-				setErrorMessage(errorResponse.message);
-			} else {
-				const resultUser = await response.json();
+			if (response.ok) {
 				localStorage.setItem('token', resultUser.result.token);
 				this.setState({
 					...this.getState(),
 					user: resultUser.result.user,
 				});
+			} else {
+				this.setState({
+					...this.getState(),
+					error: resultUser.error.data.issues[0].message,
+				});
 			}
 		} catch (error) {
-			console.error('Error occurred during login:', error);
-			setErrorMessage('An error occurred during login. Please try again later.');
+			console.log(error);
 		}
 	}
 
 	async singOut() {
 		try {
-			const response = await fetch('api/v1/users/sing', {
+			const response = await fetch('api/v1/users/sign', {
 				method: 'DELETE',
 				headers: {
 					'X-Token': localStorage.getItem('token'),

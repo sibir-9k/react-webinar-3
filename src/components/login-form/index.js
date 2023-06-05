@@ -1,27 +1,36 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './style.css';
 
 function LoginForm(props) {
+	console.log(props);
+
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
 
 	let navigate = useNavigate();
 
-	function onSubmitForm(event) {
+  function onSubmitForm(event) {
 		event.preventDefault();
-		if (login && password.length > 3) {
-			props.singIn({ login, password })
-      navigate('/profile');
+		if (login && password) {
+			props.signIn({ login, password });
+      setLogin('')
+      setPassword('')
 		}
 	}
+
+	useEffect(() => {
+		if (!props.error) {
+			navigate('/login');
+		} 
+	}, [props.error]);
+
 
 	return (
 		<div className="Form">
 			<h2>{props.title}</h2>
 			<form onSubmit={onSubmitForm}>
-      {props.errorMessage && <div className="error">{props.errorMessage}</div>}
 				<div className="Form-login">
 					<label htmlFor="name">Логин</label>
 					<input
@@ -44,16 +53,16 @@ function LoginForm(props) {
 						required
 					/>
 				</div>
+        {props.error ? <span className="error">{props.error}</span> : ''}
 				<button type="submit">Войти</button>
 			</form>
-      <span className="error">Введен не верный логин или пароль</span>
 		</div>
 	);
 }
 
 LoginForm.propTypes = {
 	title: PropTypes.string.isRequired,
-	singIn: PropTypes.func.isRequired,
+	signIn: PropTypes.func.isRequired,
 };
 
 export default memo(LoginForm);
