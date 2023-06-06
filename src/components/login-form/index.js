@@ -1,15 +1,12 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './style.css';
 
 function LoginForm(props) {
-	console.log(props);
 
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
-
-	let navigate = useNavigate();
 
   function onSubmitForm(event) {
 		event.preventDefault();
@@ -19,13 +16,6 @@ function LoginForm(props) {
       setPassword('')
 		}
 	}
-
-	useEffect(() => {
-		if (!props.error) {
-			navigate('/login');
-		} 
-	}, [props.error]);
-
 
 	return (
 		<div className="Form">

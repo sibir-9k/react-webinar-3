@@ -20,7 +20,7 @@ class FilterCategoryState extends StoreModule {
 
     const response = await fetch('/api/v1/categories?fields=_id,title,parent(_id)&limit=*');
     const resultJson = await response.json();
-    console.log(resultJson)
+
     
     this.setState({
       ...this.getState(),

@@ -5,14 +5,16 @@ import useSelector from '../../hooks/use-selector';
 import Select from '../../components/select';
 import Input from '../../components/input';
 import SideLayout from '../../components/side-layout';
+import { createCategorySelect } from '../../utils';
 
 function CatalogFilter() {
 	const store = useStore();
+	const { t } = useTranslate();
 
 	const select = useSelector((state) => ({
 		sort: state.catalog.params.sort,
 		query: state.catalog.params.query,
-		categoryList: state.filter.categoryList,
+		categoryList: state.category.categoryList,
 	}));
 
 	const callbacks = {
@@ -26,31 +28,7 @@ function CatalogFilter() {
 		onFilterSelect: useCallback((filter) => store.actions.catalog.setParams({ filter, page: 1 }),[store]),
 	};
 
-	const { t } = useTranslate();
-
-	function createFilterSelect() {
-		let filter = [{ value: 'all', title: 'Все' }];
-
-    function addCategoryFilter(data, prefix) {
-      filter.push({ value: data._id, title: prefix + data.title });
-    }
-  
-    function processCategory(elem, prefix) {
-      addCategoryFilter(elem, prefix);
-      elem.children = select.categoryList.filter((item) => item.parent?._id === elem._id);
-      elem.children.forEach((child) => {
-        processCategory(child, prefix + '- ');
-      });
-    }
-  
-    select.categoryList.filter((item) => item.parent === null).forEach((elem) => {
-      processCategory(elem, '');
-    });
-  
-    return filter;
-	}
-	const filterSelect = createFilterSelect();
-
+	const filterSelect = createCategorySelect(select.categoryList);
 
 	const options = {
 		sort: useMemo(

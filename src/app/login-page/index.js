@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
@@ -8,29 +8,36 @@ import Navigation from '../../containers/navigation';
 import HeadLogin from '../../components/head-login';
 import useStore from '../../hooks/use-store';
 import useSelector from '../../hooks/use-selector';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
 	const store = useStore();
+	let navigate = useNavigate();
+	const { t } = useTranslate();
 
 	const select = useSelector((state) => ({
 		user: state.user.user,
 		error: state.user.error,
 	}));
 
-	console.log('в селекте ' + select.error);
+	useEffect(() => {
+		if (select.user) navigate('/profile');
+	}, [select.user]);
 
 	const callbacks = {
 		signIn: useCallback((data) => store.actions.user.signIn(data), [store]),
 		singOut: useCallback((data) => store.actions.user.singOut(data), [store]),
 	};
 
-	const { t } = useTranslate();
+	function clearStateError() {
+    select.error = ''
+  }
 
 	return (
 		<PageLayout>
 			<HeadLogin user={select.user} singOut={callbacks.singOut} />
 			<Head title={t('title')} />
-			<Navigation />
+			<Navigation clearStateError={clearStateError}/>
 			<LoginForm title={'Вход'} signIn={callbacks.signIn} error={select.error} />
 		</PageLayout>
 	);

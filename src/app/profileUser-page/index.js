@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PageLayout from '../../components/page-layout';
 import HeadLogin from '../../components/head-login';
@@ -8,9 +8,12 @@ import UserDetails from '../../components/user-details';
 import useTranslate from '../../hooks/use-translate';
 import useStore from '../../hooks/use-store';
 import useSelector from '../../hooks/use-selector';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileUserPage(props) {
 	const store = useStore();
+	let navigate = useNavigate();
+  const { t } = useTranslate();
 
 	const select = useSelector((state) => ({
 		user: state.user.user,
@@ -20,7 +23,10 @@ function ProfileUserPage(props) {
 		singOut: useCallback(() => store.actions.user.singOut(), [store]),
 	};
 
-	const { t } = useTranslate();
+  useEffect(() => {
+    if(!select.user) navigate('/login');
+  }, [select.user])
+
 	return (
 		<PageLayout>
 			<HeadLogin user={select.user} singOut={callbacks.singOut} />

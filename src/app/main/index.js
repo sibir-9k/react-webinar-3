@@ -25,7 +25,7 @@ function Main() {
 	useInit(
 		() => {
 			store.actions.catalog.initParams();
-			store.actions.filter.getCategoryFilter();
+			store.actions.category.getCategoryFilter();
 		},
 		[],
 		true
