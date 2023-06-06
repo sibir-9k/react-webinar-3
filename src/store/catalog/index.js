@@ -90,6 +90,8 @@ class CatalogState extends StoreModule {
       apiParams['search[category]'] = params.filter;
     }
 
+    localStorage.setItem('filter',params.filter )
+
     const response = await fetch(`/api/v1/articles?${new URLSearchParams(apiParams)}`);
     const json = await response.json();
     this.setState({
