@@ -35,10 +35,10 @@ export function numberFormat(value, locale = 'ru-RU', options = {}) {
 }
 
 export function createCategorySelect(props) {
-	let filter = [{ value: 'all', title: 'Все' }];
+	let category = [{ value: '', title: 'Все' }];
 
 	function addCategoryFilter(data, prefix) {
-		filter.push({ value: data._id, title: prefix + data.title });
+		category.push({ value: data._id, title: prefix + data.title });
 	}
 
 	function processCategory(elem, prefix) {
@@ -53,5 +53,5 @@ export function createCategorySelect(props) {
 			processCategory(elem, '');
 		});
 
-	return filter;
+	return category;
 }

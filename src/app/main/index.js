@@ -22,14 +22,10 @@ function Main() {
 		singOut: useCallback(() => store.actions.user.singOut(), [store]),
 	};
 
-	useInit(
-		() => {
+	useInit(() => {
 			store.actions.catalog.initParams();
 			store.actions.category.getCategoryFilter();
-		},
-		[],
-		true
-	);
+		},[],true);
 
 	const { t } = useTranslate();
 
