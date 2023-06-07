@@ -15,11 +15,11 @@ function Main() {
 	const store = useStore();
 
 	const select = useSelector((state) => ({
-		user: state.user.user,
+		user: state.profile.user,
 	}));
 
 	const callbacks = {
-		singOut: useCallback(() => store.actions.user.singOut(), [store]),
+		singOut: useCallback(() => store.actions.profile.singOut(), [store]),
 	};
 
 	useInit(() => {

@@ -43,8 +43,6 @@ function CatalogFilter() {
 		),
 		filterSelect: filterSelect,
 	};
-console.log(options.filterSelect)
-console.log(options.filterSelect.value +  ' value ')
 
 	return (
 		<SideLayout padding="medium">

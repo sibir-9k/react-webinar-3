@@ -9,7 +9,7 @@ class User extends StoreModule {
 	}
 
 	async signIn(data) {
-		try {
+	
 			const response = await fetch('api/v1/users/sign', {
 				method: 'POST',
 				headers: {
@@ -31,9 +31,6 @@ class User extends StoreModule {
 					error: resultUser.error.data.issues[0].message,
 				});
 			}
-		} catch (error) {
-			console.log(error);
-		}
 	}
 
 	async singOut() {

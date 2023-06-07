@@ -17,7 +17,7 @@ function App() {
   const store = useStore()
 
   useEffect(() => {
-    store.actions.user.getUser();
+    store.actions.profile.getUser();
   }, [])
 
   const activeModal = useSelector(state => state.modals.name);

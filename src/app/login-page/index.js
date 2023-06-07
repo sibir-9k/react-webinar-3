@@ -16,28 +16,29 @@ function LoginPage() {
 	const { t } = useTranslate();
 
 	const select = useSelector((state) => ({
-		user: state.user.user,
-		error: state.user.error,
+		user: state.profile.user,
+		error: state.profile.error,
 	}));
+ 
 
 	useEffect(() => {
 		if (select.user) navigate('/profile');
 	}, [select.user]);
 
 	const callbacks = {
-		signIn: useCallback((data) => store.actions.user.signIn(data), [store]),
-		singOut: useCallback((data) => store.actions.user.singOut(data), [store]),
+		signIn: useCallback((data) => store.actions.profile.signIn(data), [store]),
+		singOut: useCallback((data) => store.actions.profile.singOut(data), [store]),
 	};
 
 	function clearStateError() {
-    select.error = ''
-  }
+		select.error = '';
+	}
 
 	return (
 		<PageLayout>
 			<HeadLogin user={select.user} singOut={callbacks.singOut} />
 			<Head title={t('title')} />
-			<Navigation clearStateError={clearStateError}/>
+			<Navigation clearStateError={clearStateError} />
 			<LoginForm title={'Вход'} signIn={callbacks.signIn} error={select.error} />
 		</PageLayout>
 	);
