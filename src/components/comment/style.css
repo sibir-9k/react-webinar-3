@@ -29,6 +29,7 @@
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 16px;
+  overflow-wrap: break-word;
 }
 .Comment-reply {
 	font-family: 'Arial';

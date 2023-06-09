@@ -1,7 +1,6 @@
 import {memo, useCallback, useMemo} from 'react';
 import {useParams} from "react-router-dom";
 import useStore from "../../hooks/use-store";
-import useSelector from "../../hooks/use-selector";
 import useTranslate from "../../hooks/use-translate";
 import useInit from "../../hooks/use-init";
 import PageLayout from "../../components/page-layout";
@@ -47,7 +46,7 @@ function Article() {
       <Spinner active={select.waiting}>
         <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
       </Spinner>
-      <Comments/>
+      <Comments paramsId={params.id}/>
     </PageLayout>
   );
 }

@@ -1,44 +1,49 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Comment from '../comment';
+import { handleDate } from '../../utils/handle-date';
 import { useDispatch, useSelector as useSelectorRedux } from 'react-redux';
-
+import useSelector from '../../hooks/use-selector';
+import shallowequal from "shallowequal"
+import { Link } from 'react-router-dom';
+import listToTree from '../../utils/list-to-tree';
+import treeToList from '../../utils/tree-to-list';
 import './style.css';
 
 function Comments(props) {
-	const comments = useSelectorRedux((state) => state.comments.comments);
-  console.log(comments)
-  
-	function handleDate(dateCreate) {
-		const dateString = dateCreate;
-		const date = new Date(dateString);
+	const reduxSelect = useSelectorRedux((state) => ({
+		comments: state.comments.comments,
+	}), shallowequal);
 
-		const options = {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-			hour: 'numeric',
-			minute: 'numeric',
-		};
-		const formattedDate = date.toLocaleDateString('ru-RU', options);
+	const select = useSelector((state) => ({
+		userAuth: state.session.exists,
+	}));
 
-		return formattedDate;
-	}
+	const renderList = useMemo(() =>
+			treeToList(listToTree(reduxSelect.comments, props.paramsId),(item, level) => ({ ...item, level })
+	),[reduxSelect.comments]);
 
+	console.log(renderList);
 	return (
 		<>
 			<div className="Comments">
-				<h2 className="Comments-all">Комментарии ({comments.length})</h2>
-				{comments.map((comment) => (
+				<h2 className="Comments-all">Комментарии ({reduxSelect.comments.length})</h2>
+				{renderList.map((comment) => (
 					<Comment
+            data={comment}
 						key={comment._id}
 						text={comment.text}
 						userName={comment.author.profile.name}
 						date={handleDate(comment.dateCreate)}
 					/>
 				))}
-
-				{/* <Comment lvl='lvl-1'/> */}
+				{select.userAuth ? (
+					''
+				) : (
+					<p>
+						<Link to={'/login'}>Войдите</Link>, чтобы иметь возможность комментировать
+					</p>
+				)}
 			</div>
 		</>
 	);
