@@ -1,9 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import PropTypes, { func } from 'prop-types';
 import './style.css';
+import CommentForm from '../comment-form';
 
 function Comment(props) {
-  const paddingLVL = {paddingLeft: `calc(${props.data.level} * 30px )`}
+	const [showCommentForm, setShowCommentForm] = useState(false);
+	const paddingLVL = { paddingLeft: `calc(${props.data.level} * 30px )` };
+	const handleClick = () => {
+		if (showCommentForm === false) {
+			setShowCommentForm(true);
+		} else {
+			setShowCommentForm(false);
+		}
+	};
 	return (
 		<>
 			<div className={`Comment`} style={paddingLVL}>
@@ -14,8 +23,11 @@ function Comment(props) {
 				<div className="Comment-body">
 					<p className="Comment-text">{props.text}</p>
 				</div>
-				<button className="Comment-reply">Ответить</button>
+				<button className="Comment-reply" onClick={handleClick}>
+					Ответить
+				</button>
 			</div>
+			{showCommentForm && <CommentForm show={handleClick} />}
 		</>
 	);
 }
